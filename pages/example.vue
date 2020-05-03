@@ -8,8 +8,8 @@
     </thead>
     <tbody>
       <tr v-for="greeting in greetings" :key="greeting.code">
-        <td>{ greeting.code  }</td>
-        <td>{ greeting.hello }</td>
+        <td>{{ greeting.code }}</td>
+        <td>{{ greeting.hello }}</td>
       </tr>
     </tbody>
   </table>
@@ -26,20 +26,23 @@ export default Vue.extend({
     }
   },
   
-  async asyncData({ app }) {
-    let langs = [ 'en', 'zh', 'de', 'fr', 'ja' ]
+  async fetch() {
+    const langs = [ 'en', 'zh', 'de', 'fr', 'ja' ]
 
-    this.greetings = await Promise.all(langs.map(async lang => {
-      const res = await $nuxt.$api.hellosalut.$get({ query: { lang: 'ja' } })
-      res.hello = res.hello.startsWith('&#')
-                ? String.fromCharCode(
-                    ...res.hello
-                      .slice(2, -1)
-                      .split(';&#')
-                      .map((n) => +n)
-                  )
-                : res.hello
-      return res
+    this.greetings = (
+      await Promise.all(
+        langs.map((lang) => this.$api.hellosalut.$get({ query: { lang } }))
+      )
+    ).map(({ code, hello }) => ({
+      code,
+      hello: hello.startsWith('&#')
+        ? String.fromCharCode(
+            ...hello
+              .slice(2, -1)
+              .split(';&#')
+              .map((n) => +n)
+          )
+        : hello
     }))
   }
 })

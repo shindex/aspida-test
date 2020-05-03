@@ -8,9 +8,9 @@ const api = <T>(client: AspidaClient<T>) => {
   return {
     hellosalut: {
       get: (option: { query: Methods0['get']['query'], config?: T }) =>
-        client.fetch<Methods0['get']['resBody']>(prefix, '/hellosalut', 'GET', option).json(),
+        client.fetch<Methods0['get']['resBody']>(prefix, '/hellosalut/', 'GET', option).json(),
       $get: async (option: { query: Methods0['get']['query'], config?: T }) =>
-        (await client.fetch<Methods0['get']['resBody']>(prefix, '/hellosalut', 'GET', option).json()).data
+        (await client.fetch<Methods0['get']['resBody']>(prefix, '/hellosalut/', 'GET', option).json()).data
     }
   }
 }
